@@ -84,10 +84,10 @@ func ParseAddressOptions(address string, options ParserOptions) []ParsedComponen
 	numComponents := uint64(cNumComponents)
 
 	parsedComponents := make([]ParsedComponent, numComponents)
-
-	// Accessing a C array
-	cComponentsPtr := (*[1 << 30](*C.char))(unsafe.Pointer(cComponents))
-	cLabelsPtr := (*[1 << 30](*C.char))(unsafe.Pointer(cLabels))
+    
+    // Accessing a C array
+    cComponentsPtr := (*[1<<30](*C.char))(unsafe.Pointer(cComponents))[:numComponents:numComponents]
+    cLabelsPtr := (*[1<<30](*C.char))(unsafe.Pointer(cLabels))[:numComponents:numComponents]
 
 	var i uint64
 	for i = 0; i < numComponents; i++ {
