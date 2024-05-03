@@ -40,15 +40,16 @@ func ParseAddressOptions(address string, options ParserOptions) []ParsedComponen
 	if !utf8.ValidString(address) {
 		return nil
 	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
 	if !libpostalSetup {
 		if !bool(C.libpostal_setup()) || !bool(C.libpostal_setup_parser()) {
 			log.Fatal("Could not load libpostal")
 		}
 		libpostalSetup = true
 	}
-
-	mu.Lock()
-	defer mu.Unlock()
 
 	cAddress := C.CString(address)
 	defer C.free(unsafe.Pointer(cAddress))
